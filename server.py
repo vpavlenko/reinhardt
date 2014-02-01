@@ -38,20 +38,19 @@ def read_data_from_socket(sock):
     return data.decode('ascii')
 
 
-def compile_response(code, message, mimetype, body):
+def compile_response(code, comment, mimetype, body):
     assert type(body) == bytes
     head = '''HTTP/1.0 {0} {1}\r
 Content-Type: {2}\r
 Content-Length: {3}\r
 \r
-'''.format(code, message, mimetype, len(body)).encode('ascii')
+'''.format(code, comment, mimetype, len(body)).encode('ascii')
     return head, body
 
 
 def http_404(request, message):
     body = '<h2>{0}</h2>'.format(message)
-    # TODO: rename MESSAGE arg
-    return compile_response(code=404, message='Not Found',
+    return compile_response(code=404, comment='Not Found',
                             mimetype='text/html', body=body.encode('ascii'))
 
 
@@ -67,7 +66,7 @@ def serve_static(request, directory):
         mimetype = mimetypes.guess_type(path)[0]
         if mimetype is None:
             mimetype = 'octet/stream'  # default action: propose to download
-        return compile_response(code=200, message='OK', mimetype=mimetype,
+        return compile_response(code=200, comment='OK', mimetype=mimetype,
                                 body=data)
 
 
@@ -106,6 +105,7 @@ def main():
         port = int(sys.argv[1])
         directory = sys.argv[2]
         static_server(port, directory)
+
 
 if __name__ == '__main__':
     main()
