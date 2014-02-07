@@ -1,0 +1,2 @@
+Тестируем правильную работу с кодировкой файловой системы.
+http://docs.python.org/3/library/os.html#file-names-command-line-arguments-and-environment-variables
